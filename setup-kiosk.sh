@@ -24,10 +24,26 @@ fi
 # shellcheck disable=SC1090
 source "$SETUP_CONFIG_FILE"
 
-KIOSK_HOSTNAME="${KIOSK_HOSTNAME:-kiosk-pi}"
-KIOSK_URL="${KIOSK_URL:-https://example.com}"
-WIFI_SSID="${WIFI_SSID:-}"
-WIFI_PASSWORD="${WIFI_PASSWORD:-}"
+CURRENT_HOSTNAME="$(hostname)"
+DEFAULT_KIOSK_URL="https://example.com"
+
+resolve_config_value() {
+  local value="${1:-}"
+  local placeholder="${2:-}"
+  local fallback="${3:-}"
+
+  if [ -z "$value" ] || [ "$value" = "$placeholder" ]; then
+    printf '%s\n' "$fallback"
+    return
+  fi
+
+  printf '%s\n' "$value"
+}
+
+KIOSK_HOSTNAME="$(resolve_config_value "${KIOSK_HOSTNAME:-}" "<HOSTNAME>" "$CURRENT_HOSTNAME")"
+KIOSK_URL="$(resolve_config_value "${KIOSK_URL:-}" "<https://example.com>" "$DEFAULT_KIOSK_URL")"
+WIFI_SSID="$(resolve_config_value "${WIFI_SSID:-}" "<SSID>" "")"
+WIFI_PASSWORD="$(resolve_config_value "${WIFI_PASSWORD:-}" "<PASSWORD>" "")"
 WIFI_HIDDEN="${WIFI_HIDDEN:-false}"
 
 echo "== Hostname =="
