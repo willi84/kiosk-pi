@@ -11,8 +11,9 @@ curl -fsSL "$REPO_BASE/kiosk-config.env" -o kiosk-config.env
 echo "🔧 Rechte setzen..."
 chmod +x setup-kiosk.sh
 
-echo "📝 Bitte config anpassen:"
+echo "📝 Bitte ggf. config anpassen:"
 echo "nano kiosk-config.env"
 
 echo "🚀 Danach ausführen:"
 echo "./setup-kiosk.sh"
+./setup-kiosk.sh
